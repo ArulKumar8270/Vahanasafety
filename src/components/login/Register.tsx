@@ -5,12 +5,8 @@ import { configData } from "../../config";
 import { setUserCredentials } from "@/slice/UserSlice";
 import { RootState } from "@/store/Store";
 
-const Login = () => {
+const Register = () => {
   const dispatch = useDispatch();
-  const globaccessToken = useSelector((state: RootState) => state.user);
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
   const navigate = useNavigate();
 
   const [UserDetails, setUserDetails] = useState({
@@ -43,11 +39,12 @@ const Login = () => {
 
     console.log(username, password);
     try {
-      const response = await fetch(`${configData?.targetUrl}/auth/login`, {
+      const response = await fetch(`${configData?.targetUrl}/auth/register`, {
         method: "POST",
         body: JSON.stringify({
           email: username,
           password: password,
+          name: username,
         }),
         headers: {
           "Content-Type": "application/json; charset=UTF-8",
@@ -58,27 +55,20 @@ const Login = () => {
 
       console.log("Response received:", response);
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      //   if (!response.ok) {
+      //     throw new Error("Network response was not ok");
+      //   }
+      //   const data = await response.json();
+      //   const successMessage = data.success;
 
-      const data = await response.json();
-      const successMessage = data.success;
-      const accessToken = data.data.access_token;
-
-      console.log("Success Message:");
-
-      dispatch(setUserCredentials({ accessToken: accessToken }));
-
-      console.log("Access Token from redux:", globaccessToken);
-      if (successMessage) {
-        navigate("/certificate-list");
+      if (response) {
+        navigate("/");
       } else {
-        alert("Please check username and password");
+        alert("Somthin want worng");
       }
-      console.log("Data received:", data);
+      console.log("Data received:", response);
     } catch (err) {
-      alert("Please check username and password");
+      alert("Somthin want worng");
 
       console.error("Error occurred:", err.message);
     }
@@ -106,7 +96,7 @@ const Login = () => {
             <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
               <div className="w-full">
                 <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">
-                  Login
+                  Register
                 </h1>
                 <label className="block text-sm">
                   <span className="text-gray-700 dark:text-gray-400">
@@ -135,7 +125,7 @@ const Login = () => {
                 </label>
 
                 <button className="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                  Log in
+                  Register
                 </button>
 
                 <hr className="my-8" />
@@ -143,7 +133,7 @@ const Login = () => {
                 <p className="mt-4">
                   <a
                     className="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
-                    href="# "
+                    href="#"
                   >
                     Forgot your password?
                   </a>
@@ -151,9 +141,9 @@ const Login = () => {
                 <p className="mt-1">
                   <Link
                     className="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
-                    to="./Register"
+                    to="/"
                   >
-                    Create account
+                    Login
                   </Link>
                 </p>
               </div>
@@ -164,4 +154,4 @@ const Login = () => {
     </form>
   );
 };
-export default Login;
+export default Register;
