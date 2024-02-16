@@ -110,7 +110,7 @@ function CertificateList() {
                       <th className="px-4 py-3 text-left">Entry ID</th>
                       <th className="px-4 py-3 text-left ">Vehicle No</th>
                       <th className="px-4 py-3 text-left">Entry Date</th>
-                      <th className="px-4 py-3">RTO Status </th>
+                      <th className="px-4 py-3">Owner Name</th>
                       <th className="px-4 py-3 text-left"> View </th>
                     </tr>
                   </thead>
@@ -120,34 +120,26 @@ function CertificateList() {
                         className="text-gray-700 dark:text-gray-400"
                         key={result.id}
                       >
-                        <td className="px-4 py-3 text-sm">8321</td>
+                        <td className="px-4 py-3 text-sm">{result?.id}</td>
                         <td className="px-4 py-3">
                           <div className="flex items-center text-sm">
                             <div>
-                              <p className="font-semibold">TN 09 AR 5531</p>
+                              <p className="font-semibold">
+                                {result?.vehicleregno}
+                              </p>
                             </div>
                           </div>
                         </td>
 
-                        <td className="px-4 py-3 text-sm">1/21/2024</td>
+                        <td className="px-4 py-3 text-sm">{result?.date}</td>
                         <td className="px-4 py-3 text-xs">
-                          <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                            approved
-                          </span>
+                          {result?.ownername}
                         </td>
                         <td className="px-4 py-3 text-sm">
                           <button
                             className="border-purple-600 border-2 text-purple-600 p-1 text-sm rounded-md px-2 "
-                            onClick={() => handleNavigate(result.id)}
-                          >
-                            <FontAwesomeIcon icon={faEye} /> View
-                          </button>
-                          <button
-                            className="border-purple-600 border-2 text-purple-600 p-1 text-sm rounded-md px-2 "
                             onClick={() => {
-                              setQrData(
-                                `${configData?.domain}/Qrcode?id=${result.id}`
-                              );
+                              handleNavigate(result.id);
                               setId(result.id);
                             }}
                           >
@@ -177,14 +169,14 @@ function CertificateList() {
         </main>
       </div>
 
-      <div>
+      {/* <div>
         {id && (
           <QRCodeScanner
             rqCode={qrData && <QRCode value={qrData} size={100} />}
             id={id}
           />
         )}
-      </div>
+      </div> */}
     </div>
   );
 }
