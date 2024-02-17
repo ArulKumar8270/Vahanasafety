@@ -21,61 +21,61 @@ const QRCodeScanner = (props) => {
   React.useEffect(() => {
     if (id) {
       refetch();
-      setTimeout(() => {
-        downloadPDF().then(() => {
-          navigate("/certificate-list");
-        });
-      }, 2000);
+      // setTimeout(() => {
+      //   downloadPDF().then(() => {
+      //     navigate("/certificate-list");
+      //   });
+      // }, 2000);
     }
   }, [id]);
 
-  // useEffect(() => {
-  //   function navigateAfterPrint() {
-  //     // Navigate to another page after print
-  //     navigate("/certificate-list"); // Replace with the actual URL
-  //   }
+  useEffect(() => {
+    function navigateAfterPrint() {
+      // Navigate to another page after print
+      navigate("/certificate-list"); // Replace with the actual URL
+    }
 
-  //   function handleAfterPrint() {
-  //     // This function will be called after the print operation is complete
-  //     console.log("Print operation completed");
+    function handleAfterPrint() {
+      // This function will be called after the print operation is complete
+      console.log("Print operation completed");
 
-  //     // Navigate to another page if printing hasn't already occurred
-  //     if (!printed) {
-  //       navigateAfterPrint();
-  //       setPrinted(true); // Update the state to indicate that printing has occurred
-  //     }
-  //   }
+      // Navigate to another page if printing hasn't already occurred
+      if (!printed) {
+        navigateAfterPrint();
+        setPrinted(true); // Update the state to indicate that printing has occurred
+      }
+    }
 
-  //   // Attach the afterprint event listener
-  //   if (window.matchMedia) {
-  //     // For modern browsers
-  //     window.matchMedia("print").addListener((mediaEvent) => {
-  //       if (!mediaEvent.matches) {
-  //         // The print operation has finished
-  //         handleAfterPrint();
-  //       }
-  //     });
-  //   } else {
-  //     // For older browsers
-  //     window.onafterprint = handleAfterPrint;
-  //   }
+    // Attach the afterprint event listener
+    if (window.matchMedia) {
+      // For modern browsers
+      window.matchMedia("print").addListener((mediaEvent) => {
+        if (!mediaEvent.matches) {
+          // The print operation has finished
+          handleAfterPrint();
+        }
+      });
+    } else {
+      // For older browsers
+      window.onafterprint = handleAfterPrint;
+    }
 
-  //   // Initiate the print operation if it hasn't occurred already
-  //   if (!printed) {
-  //     setTimeout(() => {
-  //       window.print();
-  //     }, 3000);
-  //   }
+    // Initiate the print operation if it hasn't occurred already
+    if (!printed) {
+      setTimeout(() => {
+        window.print();
+      }, 3000);
+    }
 
-  //   // Clean up the event listener when the component unmounts
-  //   return () => {
-  //     if (window.matchMedia) {
-  //       window.matchMedia("print").removeListener(() => {});
-  //     } else {
-  //       window.onafterprint = null;
-  //     }
-  //   };
-  // }, [printed]); // Dependency on 'printed' to re-run effect if 'printed' changes
+    // Clean up the event listener when the component unmounts
+    return () => {
+      if (window.matchMedia) {
+        window.matchMedia("print").removeListener(() => {});
+      } else {
+        window.onafterprint = null;
+      }
+    };
+  }, [printed]); // Dependency on 'printed' to re-run effect if 'printed' changes
 
   const downloadPDF = async () => {
     const element = document.getElementById("certificateContent");
