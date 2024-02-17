@@ -43,7 +43,7 @@ function NewEntry() {
     console.log('data from formData Faizal',formData)
     try {
       const result = await addCertificate(formData);
-      console.log(result?.["data"], "result252345234");
+      console.log(result, "result252345234");
       if (!result?.["data"]?.["response"]) {
         alert("Certificate Title already exists");
       } else {
@@ -492,7 +492,7 @@ function NewEntry() {
                       <Controller
                         name="rto"
                         control={control}
-                        rules={{ required: false }}
+                        rules={{ required: true }}
                         render={({ field }) => (
                           <select
                             {...field}
@@ -539,7 +539,7 @@ function NewEntry() {
                       <Controller
                         name="date"
                         control={control}
-                        rules={{ required: false }}
+                        rules={{ required: true }}
                         render={({ field }) => (
                           <input
                             type="text"
@@ -561,7 +561,7 @@ function NewEntry() {
                       <Controller
                         name="remarks"
                         control={control}
-                        rules={{ required: false }}
+                        rules={{ required: true }}
                         render={({ field }) => (
                           <input
                             type="text"
@@ -593,7 +593,7 @@ function NewEntry() {
                         <Controller
                           name="red20mm"
                           control={control}
-                          rules={{ required: false }}
+                          rules={{ required: true }}
                           render={({ field }) => (
                             <input
                               type="text"
@@ -619,7 +619,7 @@ function NewEntry() {
                         <Controller
                           name="white20mm"
                           control={control}
-                          rules={{ required: false }}
+                          rules={{ required: true }}
                           render={({ field }) => (
                             <input
                               type="text"
@@ -646,7 +646,7 @@ function NewEntry() {
                         <Controller
                           name="red50mm"
                           control={control}
-                          rules={{ required: false }}
+                          rules={{ required: true }}
                           render={({ field }) => (
                             <input
                               type="text"
@@ -672,7 +672,7 @@ function NewEntry() {
                         <Controller
                           name="white50mm"
                           control={control}
-                          rules={{ required: false }}
+                          rules={{ required: true }}
                           render={({ field }) => (
                             <input
                               type="text"
@@ -700,7 +700,7 @@ function NewEntry() {
                         <Controller
                           name="yellow50mm"
                           control={control}
-                          rules={{ required: false }}
+                          rules={{ required: true }}
                           render={({ field }) => (
                             <input
                               type="text"
@@ -726,7 +726,7 @@ function NewEntry() {
                         <Controller
                           name="yellow80circularreflector"
                           control={control}
-                          rules={{ required: false }}
+                          rules={{ required: true }}
                           render={({ field }) => (
                             <input
                               type="text"
@@ -755,7 +755,7 @@ function NewEntry() {
                         <Controller
                           name="white80circularreflector"
                           control={control}
-                          rules={{ required: false }}
+                          rules={{ required: true }}
                           render={({ field }) => (
                             <input
                               type="text"
@@ -782,7 +782,7 @@ function NewEntry() {
                         <Controller
                           name="white80circularreflector"
                           control={control}
-                          rules={{ required: false }}
+                          rules={{ required: true }}
                           render={({ field }) => (
                             <input
                               type="text"
@@ -811,7 +811,7 @@ function NewEntry() {
                         <Controller
                           name="class3"
                           control={control}
-                          rules={{ required: false }}
+                          rules={{ required: true }}
                           render={({ field }) => (
                             <input
                               type="text"
@@ -837,7 +837,7 @@ function NewEntry() {
                         <Controller
                           name="class4"
                           control={control}
-                          rules={{ required: false }}
+                          rules={{ required: true }}
                           render={({ field }) => (
                             <input
                               type="text"

@@ -21,32 +21,26 @@ function SideBar() {
   );
 
   const Logout = async () => {
-    navigate("/");
-    // try {
-    //   const response = await fetch(`${configData?.targetUrl}/auth/logout`, {
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //       access_token: globaccessToken,
-    //     }),
-    //     headers: {
-    //       "Content-Type": "application/json; charset=UTF-8",
-    //       app: "MTIzNDV8Vmdud2Vi",
-    //       mode: "no-cors",
-    //     },
-    //   });
-    //   console.log("Response received:", response);
-    //   if (!response.ok) {
-    //     throw new Error("Network response was not ok");
-    //   }
-    //   const data = await response.json();
-    //   const successMessage = data.success;
-    //   if (successMessage) {
-    //     navigate("/");
-    //   }
-    //   console.log("Data received:", data);
-    // } catch (err) {
-    //   console.error("Error occurred:", err.message);
-    // }
+    // navigate("/");
+    try {
+      const response = await fetch(`${configData?.targetUrl}/logout`, {
+        method: "POST",
+        body: JSON.stringify({
+          access_token: globaccessToken,
+        }),
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+          app: "MTIzNDV8Vmdud2Vi",
+          mode: "no-cors",
+        },
+      });
+      console.log("Response received:", response);
+      if (response?.statusText === "Unauthorized") {
+        navigate("/");
+      }
+    } catch (err) {
+      console.error("Error occurred:", err.message);
+    }
     console.log("l;aksjdflkasjdlfkajsldfkjaslkdj", location);
   };
   const routes = [

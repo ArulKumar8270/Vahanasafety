@@ -85,7 +85,7 @@ function Dashboard() {
       <SideBar />
       <div className="w-full">
         <TopBar />
-        <main className="h-full  overflow-y-auto">
+        <main className="overflow-y-auto">
           <div className="container px-6 mx-auto grid">
             <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
               Dashboard

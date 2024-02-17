@@ -17,7 +17,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
-        <Routes>
+        <Routes> 
           <Route path="/" element={<Login />} />
           <Route path="/Register" element={<Register />} />
           <Route path="/Qrcode" element={<QRCodeScanner />} />

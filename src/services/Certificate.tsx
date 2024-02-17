@@ -8,10 +8,8 @@ const axiosBaseQuery = fetchBaseQuery({
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).user?.accessToken;
     console.log(token, "token223143");
-
     headers.set("Authorization", `Bearer ${token}`);
-    headers.set("Content-Type", "application/json; charset=UTF-8");
-    headers.set("app", "MTIzNDV8Vmdud2Vi");
+    headers.append("app", "MTIzNDV8Vmdud2Vi");
     headers.set("mode", "no-cors");
 
     return headers;
