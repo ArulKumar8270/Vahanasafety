@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef , Fragment } from "react";
 import SideBar from "../sidebar/SideBar";
 import TopBar from "../sidebar/topbar/TopBar";
 import "./newentry.css";
@@ -7,11 +7,24 @@ import { tamilNaduRTOs } from "@/CommonData";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { useAddCertificateMutation } from "@/services/Certificate";
 import { useNavigate } from "react-router-dom";
+import { Dialog, Transition } from '@headlessui/react'
 
 function NewEntry() {
+
+
+
   const [addCertificate] = useAddCertificateMutation();
   const navigate = useNavigate();
-
+  let [isOpen, setIsOpen] = useState(false)
+ 
+ 
+ 
+  function closeModal() {
+    setIsOpen(false)
+    navigate("/certificate-list");
+  }
+ 
+ 
   const {
     handleSubmit,
     control,
@@ -19,18 +32,23 @@ function NewEntry() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data, "data23452345234");
-    const formData = new FormData();
+    console.log(data, "data");
+    const dataFrom = data ;
+    console.log('datafrom data form',dataFrom)
+    const formData = new FormData();  
     for (const key in data) {
       formData.append(key, data[key]);
+      console.log(formData)
     }
+    console.log('data from formData Faizal',formData)
     try {
       const result = await addCertificate(formData);
       console.log(result?.["data"], "result252345234");
       if (!result?.["data"]?.["response"]) {
         alert("Certificate Title already exists");
       } else {
-        // navigate("/certificate-list");
+        setIsOpen(true)
+         //navigate("/certificate-list");
       }
     } catch (error) {
       console.error("Error making POST request:", error);
@@ -43,6 +61,65 @@ function NewEntry() {
       <div className="w-full">
         <TopBar />
         <main className="h-full  overflow-y-auto">
+         
+
+        <Transition appear show={isOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black/25" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <Dialog.Title
+                    as="h3"
+                    className="text-lg font-medium leading-6 text-gray-900"
+                  >
+                   🎉 Certificate Generated successfully 🎉
+                  </Dialog.Title>
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500">
+                     Your Certificate Has Been Created Successfully. Please
+                      Download the Certificate From Certificate List Page
+                    </p>
+                  </div>
+
+                  <div className="mt-4">
+                    <button
+                      type="button"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      onClick={closeModal}
+                    >
+                      Done
+                    </button>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+
+
+
           <div className="container px-6 mx-auto grid">
             <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
               New Entry
@@ -262,7 +339,7 @@ function NewEntry() {
                   <div className="mb-6">
                     <label className="mb-2 block text-blac">Address :</label>
                     <Controller
-                      name="ownername"
+                      name="address"
                       control={control}
                       rules={{ required: true }}
                       render={({ field }) => (
@@ -358,7 +435,7 @@ function NewEntry() {
                       Hologram Number:
                     </label>
                     <Controller
-                      name="phoneo"
+                      name="hologramno"
                       control={control}
                       rules={{ required: true }}
                       render={({ field }) => (
@@ -370,7 +447,7 @@ function NewEntry() {
                         />
                       )}
                     />
-                    {errors.phoneo?.type === "required" && (
+                    {errors.hologramno?.type === "required" && (
                       <p role="alert" className="error">
                         Field is required
                       </p>
@@ -391,7 +468,7 @@ function NewEntry() {
                         <Controller
                           name="oldcertificatenum"
                           control={control}
-                          rules={{ required: true }}
+                          rules={{ required: false }}
                           render={({ field }) => (
                             <input
                               type="text"
