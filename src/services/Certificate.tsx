@@ -8,7 +8,6 @@ const axiosBaseQuery = fetchBaseQuery({
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).user?.accessToken;
     console.log(token, "token223143");
-    headers.set("Authorization", `Bearer ${token}`);
     headers.append("app", "MTIzNDV8Vmdud2Vi");
     headers.set("mode", "no-cors");
 
@@ -25,8 +24,8 @@ export const api = createApi({
     getCertificate: builder.query<any[], void>({
       query: () => `/registrations`,
     }),
-    getCertificateId: builder.query<any, string>({
-      query: (string) => `/registrations/${string}`,
+    getCertificateId: builder.query<any, number>({
+      query: (number) => `/registrations/${number}`,
     }),
     addCertificate: builder.mutation({
       query: (body) => ({

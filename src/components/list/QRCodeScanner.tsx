@@ -14,16 +14,18 @@ const QRCodeScanner = (props) => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
-  const { data, refetch } = useGetCertificateIdQuery(id);
+  const { data, refetch } = useGetCertificateIdQuery(Number(id));
   const [qrData, setQrData] = React.useState(window.location.href); // QR code data
   console.log(id, "queryParams43", data?.data, location);
 
   React.useEffect(() => {
     if (id) {
       refetch();
-      downloadPDF().then(() => {
-        navigate("/certificate-list")
-      })
+      setTimeout(() => {
+        downloadPDF().then(() => {
+          navigate("/certificate-list");
+        });
+      }, 2000);
     }
   }, [id]);
 
