@@ -81,16 +81,8 @@ const Register = () => {
           <div className="flex flex-col overflow-y-auto md:flex-row">
             <div className="h-32 md:h-auto md:w-1/2">
               <img
-                aria-hidden="true"
-                className="object-cover w-full h-full dark:hidden"
-                src={"../../assets/carimage.jpg"}
-                alt="Office"
-              />
-              <img
-                aria-hidden="true"
-                className="hidden object-cover w-full h-full dark:block"
-                src="../assets/img/login-office-dark.jpeg"
-                alt="Office"
+                src={"./src/assets/carimage.jpg"}
+                style={{ width: "100%", height: "100%" }}
               />
             </div>
             <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
