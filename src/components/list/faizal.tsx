@@ -1,146 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
-import QRCode from "react-qr-code";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
-import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { configData } from "@/config";
-import { useGetCertificateIdQuery } from "@/services/Certificate";
-import './Qrcode.css'
-import { useSelector } from "react-redux";
-import { RootState } from "@reduxjs/toolkit/query";
+import React from 'react'
 
-
-const QRCodeScanner = (props) => {
-  const navigate = useNavigate();
-  const globaccessToken = useSelector((state: RootState) => state.user);
-  const [printed, setPrinted] = useState(false);
-
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const id = queryParams.get("id");
-  const { data, refetch } = useGetCertificateIdQuery(Number(id));
-  const [qrData, setQrData] = React.useState(window.location.href); // QR code data
-  console.log(id, "queryParams43", data?.data, location);
-  console.log('data from data ',data)
-
-  React.useEffect(() => {
-    if (id) {
-      refetch();
-      // setTimeout(() => {
-      //   downloadPDF().then(() => {
-      //     navigate("/certificate-list");
-      //   });
-      // }, 2000);
-    }
-  }, [id]);
-
-  useEffect(() => {
-    function navigateAfterPrint() {
-      // Navigate to another page after print
-
-     // navigate("/certificate-list"); // Replace with the actual URL
-    }
-
-    function handleAfterPrint() {
-      // This function will be called after the print operation is complete
-      console.log("Print operation completed",data);
-
-      // Navigate to another page if printing hasn't already occurred
-      if (!printed) {
-        navigateAfterPrint();
-        setPrinted(true); // Update the state to indicate that printing has occurred
-      }
-    }
-
-    // Attach the afterprint event listener
-    if (window.matchMedia) {
-      // For modern browsers
-      window.matchMedia("print").addListener((mediaEvent) => {
-        if (!mediaEvent.matches) {
-          // The print operation has finished
-          handleAfterPrint();
-        }
-      });
-    } else {
-      // For older browsers
-      window.onafterprint = handleAfterPrint;
-    }
-
-    // Initiate the print operation if it hasn't occurred already
-    if (!printed) {
-      setTimeout(() => {
-        window.print();
-      }, 3000);
-    }
-
-    // Clean up the event listener when the component unmounts
-    return () => {
-      if (window.matchMedia) {
-        window.matchMedia("print").removeListener(() => {});
-      } else {
-        window.onafterprint = null;
-      }
-    };
-  }, [printed]); // Dependency on 'printed' to re-run effect if 'printed' changes
-
-  const downloadPDF = async () => {
-    const element = document.getElementById("certificateContent");
-
-    const canvas = await html2canvas(element, {
-      scale: 4, // Adjust scale if needed
-      useCORS: true, // Enable CORS if required for cross-origin content
-      logging: true, // Enable logging for debugging (optional)
-    });
-
-    const imgData = canvas.toDataURL("image/png");
-
-    // Calculate the aspect ratio of the image
-    const aspectRatio = canvas.width / canvas.height;
-
-    // Set the PDF dimensions based on the aspect ratio
-    const pdfWidth = 215; // Width in mm (A4 size)
-    const pdfHeight = pdfWidth / aspectRatio;
-
-    // Set padding in mm
-    const padding = 10;
-
-    // Calculate adjusted dimensions with padding
-    const adjustedPdfWidth = pdfWidth - 2 * padding;
-    const adjustedPdfHeight = pdfHeight - 2 * padding;
-
-    // Create a new jsPDF instance
-    const pdf = new jsPDF({
-      unit: "mm",
-      format: [pdfWidth, pdfHeight],
-    });
-
-    // Add image with padding
-    pdf.addImage(
-      imgData,
-      "PNG",
-      padding,
-      padding,
-      adjustedPdfWidth,
-      adjustedPdfHeight
-    );
-
-    // Save the PDF
-    pdf.save("certificate.pdf");
-  };
-
+function faizal() {
   return (
-    <div
-      id="certificateContent"
-      style={{ width: "995px", paddingBottom: "15px",fontFamily:"times-new-roman" }}
-      className="qrcodescannerclass"
-    >
     <div><>
     <style
       type="text/css"
       dangerouslySetInnerHTML={{
         __html:
-          ' * {margin:0; padding:0; text-indent:0; }\n         .s1 { color: #525252; font-family:"Nunito", sans-serif; font-weight: 700; font-style: normal; text-decoration: none; font-size: 25px; }\n         .s2 { color: black; font-family:"Nunito", sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 16px; }\n         .s3 { color: #525252; font-family:"Lucida Sans Unicode", sans-serif; font-style: normal; font-weight: 600; text-decoration: none; font-size: 19px; }\n         p { color: black; font-family:"Times New Roman", Times, serif; line-height: 1;font-style: normal; font-weight: bold; text-decoration: none; font-size: 14px; margin0px;}\n         .s4 { color: black; font-family:Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 13.5pt; }\n         h1 { color: black; font-family:"Times New Roman", Times, serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 14pt; }\n         .h2 { color: black; font-family:"Times New Roman", Times, serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 9pt; }\n         .s5 { color: #000000;  font-family: "Times New Roman", Times, serif; padding:5px; font-size: 17px !important;display: flex;padding-top: 5px !important;align-items: center; font-style: normal; font-weight: bold; text-decoration: none; font-size: 10.5pt; }\n         .s6 { color: #000000;font-family:"Times New Roman", Times, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 14px; }\n         .s7 { color: #000000; font-family:"Times New Roman", Times, serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 13px; }\n         .s8 { color: #000000; font-family:"Times New Roman", Times, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 13px;}\n         .s9 { color: #000000; font-family:"Times New Roman", Times, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 13.5pt; }\n         .s10 { color: black; font-family:"Times New Roman", Times, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 13px; }\n         .a { color: black; font-family:"Times New Roman", Times, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 13px; }\n         table, tbody {vertical-align: top; overflow: visible; }\n  .tabConte:{margin-bottom: 10px}    ',
+          ' * {margin:0; padding:0; text-indent:0; }\n         .s1 { color: #525252; font-family:"Times New Roman", Times, serif; font-weight: 700; font-style: normal; text-decoration: none; font-size: 25px; }\n         .s2 { color: black; font-family:Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 16px; }\n         .s3 { color: #525252; font-family:"Lucida Sans Unicode", sans-serif; font-style: normal; font-weight: 600; text-decoration: none; font-size: 19px; }\n         p { color: black; font-family:"Times New Roman", Times, serif; line-height: 1;font-style: normal; font-weight: bold; text-decoration: none; font-size: 14px; margin0px;padding:2.6px;}\n         .s4 { color: black; font-family:Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 13.5pt; }\n         h1 { color: black; font-family:"Times New Roman", Times, serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 14pt; }\n         .h2 { color: black; font-family:"Times New Roman", Times, serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 9pt; }\n         .s5 { color: #000000;  font-family: "Times New Roman", Times, serif;padding: 7.6px !important; font-size: 17px !important;display: flex;padding-top: 5px !important;align-items: center; font-style: normal; font-weight: bold; text-decoration: none; font-size: 10.5pt; }\n         .s6 { color: #000000;font-family:"Times New Roman", Times, serif; font-style: normal; font-weight: normal; text-decoration: none; padding: 1.8px;font-size: 14px; }\n         .s7 { color: #000000; font-family:"Times New Roman", Times, serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12px; }\n         .s8 { color: #000000; font-family:"Times New Roman", Times, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 8pt; }\n         .s9 { color: #000000; font-family:"Times New Roman", Times, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 13.5pt; }\n         .s10 { color: black; font-family:"Times New Roman", Times, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 13px; }\n         .a { color: black; font-family:"Times New Roman", Times, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 13px; }\n         table, tbody {vertical-align: top; overflow: visible; }\n  .tabConte:{margin-bottom: 10px}    ',
       }}
     />
     <p style={{ textIndent: "0pt", textAlign: "left" }}>
@@ -173,10 +40,6 @@ const QRCodeScanner = (props) => {
               paddingLeft: "67pt",
               textIndent: "0pt",
               textAlign: "center",
-              lineHeight:"35px",
-              fontFamily:"Nunito, sans-serif",
-              fontWeight:"bold",
-              color:"black"
             }}
           >
             VEHICLE CONSPICUITY ONLINE MIS CERTIFICATE
@@ -188,7 +51,6 @@ const QRCodeScanner = (props) => {
               paddingLeft: "67pt",
               textIndent: "0pt",
               textAlign: "center",
-              lineHeight:"35px"
             }}
           >
             COMPLIANCE TO AUTOMOTIVE INDUSTRY STANDARD - 089 &amp; 090
@@ -200,7 +62,6 @@ const QRCodeScanner = (props) => {
               paddingLeft: "67pt",
               textIndent: "0pt",
               textAlign: "center",
-              lineHeight:"35px"
             }}
           >
             (Generated online in rtvsta.tn.gov.in)
@@ -704,14 +565,13 @@ const QRCodeScanner = (props) => {
               borderRightStyle: "solid",
               borderRightWidth: "1px",
               borderColor: "#000000",
-              padding:'0',
             }}
             colSpan={2}
             rowSpan={8}
           >
             
-            <img style={{ width: "100%",height: "3.6in" }} src={data?.data?.rcimage} />
-            
+            <img style={{ width: "100%",height: "100%" }} src={data?.data?.rcimage} />
+            <p />
           </td>
         </tr>
         <tr style={{ height: "37pt" }}>
@@ -727,7 +587,6 @@ const QRCodeScanner = (props) => {
               borderRightStyle: "solid",
               borderRightWidth: "1px",
               borderColor: "#000000",
-              padding:"4px"
             }}
             colSpan={2}
           >
@@ -1262,124 +1121,100 @@ xml:space="preserve"
             </p>
           </td>
         </tr>
-        <tr style={{ height: "110pt" }}>
-              <td
-                style={{
-                  width: "138pt",
-                  borderTopStyle: "solid",
-                  borderTopWidth: "1px",
-                  borderLeftStyle: "solid",
-                  borderLeftWidth: "1px",
-                  borderBottomStyle: "solid",
-                  borderBottomWidth: "0px",
-                  borderRightStyle: "solid",
-                  borderRightWidth: "1px",
-                  borderColor: "#000000",
-                }}
-              >
-                <p
-                  style={{
-                    paddingLeft: "1pt",
-                    textIndent: "0pt",
-                    textAlign: "left",
-                  }}
-                >
-                  <span></span>
-                </p>
-                <img
-                  style={{ width: "100%", height: "142px", paddingLeft: "5px" }}
-                  src={data?.data?.frontimage}
-                />
-                <p />
-              </td>
-              <td
-                style={{
-                  width: "139pt",
-                  borderTopStyle: "solid",
-                  borderTopWidth: "1px",
-                  borderLeftStyle: "solid",
-                  borderLeftWidth: "0px",
-                  borderBottomStyle: "solid",
-                  borderBottomWidth: "0px",
-                  borderRightStyle: "solid",
-                  borderRightWidth: "1px",
-                  borderColor: "#000000",
-                }}
-              >
-                <p
-                  style={{
-                    paddingLeft: "1pt",
-                    textIndent: "0pt",
-                    textAlign: "left",
-                  }}
-                >
-                  <span></span>
-                </p>
-                <img
-                  style={{ width: "100%", height: "142px" }}
-                  src={data?.data?.leftimage}
-                />
-                <p />
-              </td>
-              <td
-                style={{
-                  width: "139pt",
-                  borderTopStyle: "solid",
-                  borderTopWidth: "1px",
-                  borderLeftStyle: "solid",
-                  borderLeftWidth: "0px",
-                  borderBottomStyle: "solid",
-                  borderBottomWidth: "0px",
-                  borderRightStyle: "solid",
-                  borderRightWidth: "1px",
-                  borderColor: "#000000",
-                }}
-              >
-                <p
-                  style={{
-                    paddingLeft: "1pt",
-                    textIndent: "0pt",
-                    textAlign: "left",
-                  }}
-                >
-                  <span></span>
-                </p>
-                <img
-                  style={{ width: "100%", height: "142px" }}
-                  src={data?.data?.rightimage}
-                />
-                <p />
-              </td>
-              <td
-                style={{
-                  width: "138pt",
-                  borderTopStyle: "solid",
-                  borderTopWidth: "1px",
-                  borderLeftStyle: "solid",
-                  borderLeftWidth: "0px",
-                  borderBottomStyle: "solid",
-                  borderBottomWidth: "0px",
-                  borderRightStyle: "solid",
-                  borderRightWidth: "1px",
-                  borderColor: "#000000",
-                }}
-              >
-                <p
-                  style={{
-                    paddingLeft: "1pt",
-                    textIndent: "0pt",
-                    textAlign: "left",
-                  }}
-                >
-                  <span></span>
-                </p>
-                <img
-                  style={{ width: "100%", height: "142px" }}
-                  src={data?.data?.backimage}
-                />
-                <p />
-              </td>
-            </tr>
+        <tr style={{ height: "100%",display:"grid",gridTemplateColumns:"25% 25% 25% 25%" }}>
+          <td
+            style={{
+              width: "138pt",
+              borderTopStyle: "solid",
+              borderTopWidth: "1px",
+              borderLeftStyle: "solid",
+              borderLeftWidth: "1px",
+              borderBottomStyle: "solid",
+              borderBottomWidth: "0px",
+              borderRightStyle: "solid",
+              borderRightWidth: "1px",
+              borderColor: "#000000",
+            }}
+          >
+            
+            <img
+              style={{ width: "2.3in", height: "1.8in", padding: "1px" }}
+              src={data?.data?.frontimage}
+            />
+            <p />
+          </td>
+          <td
+            style={{
+              width: "139pt",
+              borderTopStyle: "solid",
+              borderTopWidth: "1px",
+              borderLeftStyle: "solid",
+              borderLeftWidth: "0px",
+              borderBottomStyle: "solid",
+              borderBottomWidth: "0px",
+              borderRightStyle: "solid",
+              borderRightWidth: "1px",
+              borderColor: "#000000",
+            }}
+          >
+            
+            <img
+              style={{ width: "2.3in", height: "1.8in", padding: "1px" }}
+              src={data?.data?.leftimage}
+            />
+            <p />
+          </td>
+          <td
+            style={{
+              width: "139pt",
+              borderTopStyle: "solid",
+              borderTopWidth: "1px",
+              borderLeftStyle: "solid",
+              borderLeftWidth: "0px",
+              borderBottomStyle: "solid",
+              borderBottomWidth: "0px",
+              borderRightStyle: "solid",
+              borderRightWidth: "1px",
+              borderColor: "#000000",
+            }}
+          >
+            
+            <img
+             style={{ width: "2.3in", height: "1.8in", padding: "1px" }}
+              src={data?.data?.rightimage}
+            />
+            <p />
+          </td>
+          <td   
+            style={{
+              width: "138pt",
+              borderTopStyle: "solid",
+              borderTopWidth: "1px",
+              borderLeftStyle: "solid",
+              borderLeftWidth: "0px",
+              borderBottomStyle: "solid",
+              borderBottomWidth: "0px",
+              borderRightStyle: "solid",
+              borderRightWidth: "1px",
+              borderColor: "#000000",
+            }}
+          >
+            <p
+              style={{
+                paddingLeft: "1pt",
+                textIndent: "0pt",
+                textAlign: "left",
+              }}
+            >
+              <span></span>
+            </p>
+            <img
+              style={{ width: "2.3in", height: "1.8in", padding: "1px" }}
+              src={data?.data?.backimage}
+            />
+            <p />
+          </td>
+        </tr>
         <tr style={{ height: "25pt" }}>
           <td
             style={{
@@ -1393,7 +1228,6 @@ xml:space="preserve"
               borderRightStyle: "solid",
               borderRightWidth: "1px",
               borderColor: "#000000",
-              padding: '6px' ,
             }}
             colSpan={4}
           >
@@ -1448,7 +1282,6 @@ xml:space="preserve"
                 paddingLeft: "1pt",
                 textIndent: "0pt",
                 textAlign: "left",
-                paddingTop:"17px"
               }}
             >
               Authorized Dealer Seal &amp; Signature
@@ -1477,7 +1310,6 @@ xml:space="preserve"
                 paddingLeft: "32pt",
                 textIndent: "0pt",
                 textAlign: "left",
-                paddingTop:"32px",
               }}
             >
               Customer Signature
@@ -1494,7 +1326,6 @@ xml:space="preserve"
         lineHeight: "9pt",
         textAlign: "center",
         marginBottom: "20px",
-        marginTop:"5px"
       }}
     >
       <a href="http://WWW.RTVSTA.TN.GOV.IN/" className="a" target="_blank">
@@ -1503,8 +1334,7 @@ xml:space="preserve"
       WWW.RTVSTA.TN.GOV.IN]
     </p>
   </></div>
-</div>
-  );
-};
+  )
+}
 
-export default QRCodeScanner;
+export default faizal
